@@ -19,7 +19,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserService userService;
-
     private final JwtTokenProvider jwtTokenProvider;
 
     /**
@@ -41,10 +40,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable(); // 403에러로 추가, 사이트 간 요청 위조(Cross-Site Request Forgery) 공격 방지 기능
         http.authorizeRequests()
                 .antMatchers("/admin/**").hasRole("ADMIN") // /admin 경로의 모든 경로는 ADMIN권한 사용자만 접근
-                .antMatchers("/**").permitAll() // 모든 경로에 권한없이 접근 가능
+                .antMatchers("/api/v1/signup", "/api/v1/signin").permitAll() // 가입 및 로그인은 누구나 접근 가능
+//                .antMatchers("/**").permitAll() // 모든 경로에 권한없이 접근 가능
                 .and()
             .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class); // jwt token 필터를 id/password 인증 필터 전에 넣는다.
-
     }
 
     @Bean

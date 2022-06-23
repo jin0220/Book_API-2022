@@ -38,7 +38,7 @@ public class JwtTokenProvider {
 
     private final UserService userService;
 
-    @PostConstruct
+    @PostConstruct // 의존성 주입이 이루어진 후 초기화를 수행하는 메서드
     protected void init() {
         SECRET_KEY = Base64.getEncoder().encodeToString(SECRET_KEY.getBytes());
     }
@@ -46,15 +46,14 @@ public class JwtTokenProvider {
     /**
      * jwt 토튼 생성
      */
-    public String createToken(String userPk, Collection<? extends GrantedAuthority> roles){
+    public String createToken(String userPk){
         Claims claims = Jwts.claims().setSubject(userPk);
-        claims.put("roles", roles);
         Date now = new Date();
         return Jwts.builder()
-                .setClaims(claims) // 데이터
+                .setClaims(claims) // 토큰에 담을 데이터
                 .setIssuedAt(now) // 토큰 발행 일자
                 .setExpiration(new Date(now.getTime() + tokenValidMilisecond)) // 토큰 만료 일자
-                .signWith(SignatureAlgorithm.ES256, SECRET_KEY) // 암호화 알고리즘, secret 값 세팅
+                .signWith(SignatureAlgorithm.HS256, SECRET_KEY) // 암호화 알고리즘, secret 값 세팅
                 .compact();
     }
 
@@ -74,7 +73,7 @@ public class JwtTokenProvider {
     }
 
     /**
-     * HTTP Request의 Header에서 Token Parsing -> "X-AUTH-TOKEN:jwt"
+     * HTTP Request의 Header에서 Token Parsing -> "X-AUTH-TOKEN:jwt(토큰값)"
      */
     public String resolveToken(HttpServletRequest request) {
         return request.getHeader("X-AUTH-TOKEN");

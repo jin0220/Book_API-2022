@@ -3,13 +3,11 @@ package com.example.book.service;
 import com.example.book.entity.User;
 import com.example.book.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
 
 @Service
 @RequiredArgsConstructor // 의존성 주입
@@ -33,13 +31,18 @@ public class UserService implements UserDetailsService {
         return true;
     }
 
+    /**
+    * 로그인
+    * @param userInfo 사용자의 입력 정보
+    * @return 회원정보 존재 여부 및 비밀번호 일치 여부
+    */
     public boolean login(User userInfo){
         // 회원 정보가 존재하는지 확인
         User user = userRepository.findUserById(userInfo.getId());
         if(user == null) return false;
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         // 회원 비밀번호 일치 여부 확인
-        if(!encoder.matches(userInfo.getPassword(), user.getPassword())){
+        if(!encoder.matches(userInfo.getPassword(), user.getPassword())) {
             return false;
         }
 

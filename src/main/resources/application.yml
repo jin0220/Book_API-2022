@@ -1,9 +1,9 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/?serverTimezone=Asia/Seoul
-    username:
-    password:
+    url: jdbc:mysql://localhost:3306/easyfarm?serverTimezone=Asia/Seoul
+    username: user1
+    password: 1234
   jpa:
     database-platform: org.hibernate.dialect.MySQL8Dialect
     hibernate:
@@ -11,5 +11,7 @@ spring:
     show-sql: true
     properties:
       hibernate.format_sql: true
+  jwt:
+    secret: HRlELXqpSB
 server:
   port: 9090
