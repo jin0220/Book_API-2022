@@ -7,6 +7,9 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
+/**
+* 클라이언트가 발급 받은 토큰을 요청에 포함해 보내면 해당 토큰의 유효성을 확인하는 필터
+*/
 public class JwtAuthenticationFilter extends GenericFilter {
 
     private JwtTokenProvider jwtTokenProvider;

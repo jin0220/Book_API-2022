@@ -30,17 +30,20 @@ public class User implements UserDetails {
     @ApiModelProperty(example = "회원 프로필 사진")
     private String profileImage;
 
-//    @OneToMany(mappedBy = "user")
-//    private List<Record> recordList = new ArrayList<>();
-//
-//    @OneToMany(mappedBy = "fromUser")
-//    private List<Follow> fromUserList = new ArrayList<>();
-//
-//    @OneToMany(mappedBy = "toUser")
-//    private List<Follow> toUserList = new ArrayList<>();
-//
-//    @OneToMany(mappedBy = "user")
-//    private List<Likes> likesList = new ArrayList<>();
+    @ApiModelProperty(example = "회원의 리프레시 토큰")
+    private String refreshToken;
+
+    @OneToMany(mappedBy = "user")
+    private List<Record> recordList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "fromUser")
+    private List<Follow> fromUserList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "toUser")
+    private List<Follow> toUserList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<Likes> likesList = new ArrayList<>();
 
 
 
@@ -72,5 +75,9 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public void changeRefreshToken(String refreshToken){
+        this.refreshToken = refreshToken;
     }
 }

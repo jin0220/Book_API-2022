@@ -1,6 +1,7 @@
 package com.example.book.controller;
 
 import com.example.book.configuration.JwtTokenProvider;
+import com.example.book.dto.UserDTO;
 import com.example.book.entity.User;
 import com.example.book.entity.response.Message;
 import com.example.book.entity.response.StatusEnum;
@@ -26,7 +27,6 @@ public class UserController {
 
     private final UserService userService;
     private final JwtTokenProvider jwtTokenProvider;
-
 
     /**
      * 회원 가입
@@ -84,14 +84,17 @@ public class UserController {
      */
     @ResponseBody
     @PostMapping(value = "/signin",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "로그인")
     public ResponseEntity<Message> login(@RequestBody User user) {
         boolean check = userService.login(user);
         // 회원 정보가 일치하면 토큰 생성
         if(check) {
-            String token = jwtTokenProvider.createToken(user.getId());
+            String accessToken = jwtTokenProvider.createToken(user.getId());
+            String refreshToken = jwtTokenProvider.createRefreshToken();
 
             Map<String, String> map = new HashMap<>();
-            map.put("token", token);
+            map.put("accessToken", accessToken);
+            map.put("refreshToken", refreshToken);
 
             Message message = new Message();
             message.setMessage("Login Success");
@@ -105,6 +108,14 @@ public class UserController {
             message.setMessage("Login Fail");
             return new ResponseEntity<>(message, HttpStatus.OK);
         }
-//        return false;
     }
+
+//    @ApiOperation(value = "토큰 재발급", notes = "토큰을 재발급힌다.")
+//    @PostMapping(value = "/refresh")
+//    public UserDTO refreshToken(
+//            @RequestHeader(value = "X-AUTH-TOKEN") String accessToken,
+//            @RequestHeader(value = "REFRESH-TOKEN") String refreshToken){
+//
+//        return userService.refreshToken(accessToken, refreshToken);
+//    }
 }

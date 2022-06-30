@@ -1,8 +1,11 @@
 package com.example.book.service;
 
+import com.example.book.configuration.JwtTokenProvider;
+import com.example.book.dto.UserDTO;
 import com.example.book.entity.User;
 import com.example.book.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -14,6 +17,7 @@ import org.springframework.stereotype.Service;
 public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
+//    private final JwtTokenProvider jwtTokenProvider;
 
     /**
     * 회원정보 추가(회원가입)
@@ -48,6 +52,17 @@ public class UserService implements UserDetailsService {
 
         return true;
     }
+    /**
+     *
+     * */
+//    public UserDTO refreshToken(String accessToken, String refreshToken){
+//        if(!jwtTokenProvider.validationToken(accessToken)) throw new AccessDeniedException("");
+//            User user = userRepository.findUserByRefreshToken(String.valueOf(jwtTokenProvider.getUserPk(accessToken)));
+//        if(!jwtTokenProvider.validationToken(user.getRefreshToken()) || !refreshToken.equals(user.getRefreshToken()))
+//            throw new AccessDeniedException("");
+//            user.changeRefreshToken(jwtTokenProvider.createRefreshToken());
+//        return new UserDTO(user.getId(), jwtTokenProvider.createToken(String.valueOf(user.getId())), user.getRefreshToken());
+//    }
 
     /**
      * Spring Security 필수 메소드

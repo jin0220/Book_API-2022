@@ -1,30 +1,23 @@
 package com.example.book.configuration;
 
 import com.example.book.service.UserService;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
-import java.lang.reflect.GenericArrayType;
 import java.util.Base64;
-import java.util.Collection;
 import java.util.Date;
 
 /**
  * jwt 토큰 생성 및 유효성 검증 컴포넌트
  */
-
 @Component
 @RequiredArgsConstructor
 public class JwtTokenProvider {
@@ -33,10 +26,11 @@ public class JwtTokenProvider {
     private String SECRET_KEY;
 
     private long tokenValidMilisecond = 1000L * 60 * 60; // 1시간만 토큰 유효
+    private long refreshTokenValidMillisecond = 1000L * 60 * 60 * 24 * 3; // 3일간 유효
 
     private final UserDetailsService userDetailsService;
 
-    private final UserService userService;
+//    private final UserService userService;
 
     @PostConstruct // 의존성 주입이 이루어진 후 초기화를 수행하는 메서드
     protected void init() {
@@ -54,6 +48,18 @@ public class JwtTokenProvider {
                 .setIssuedAt(now) // 토큰 발행 일자
                 .setExpiration(new Date(now.getTime() + tokenValidMilisecond)) // 토큰 만료 일자
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY) // 암호화 알고리즘, secret 값 세팅
+                .compact();
+    }
+
+    /**
+     * jwt refresh token 생성
+     */
+    public String createRefreshToken(){
+        Date now = new Date();
+        return Jwts.builder()
+                .setIssuedAt(now)
+                .setExpiration(new Date(now.getTime() + refreshTokenValidMillisecond))
+                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
                 .compact();
     }
 
@@ -86,8 +92,19 @@ public class JwtTokenProvider {
         try {
             Jws<Claims> claimsJws = Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token);
             return !claimsJws.getBody().getExpiration().before(new Date()); // 만료날짜가 현재보다 이전이면 false
+        } catch (ExpiredJwtException e){ // 만료시간이 지난 토큰이면 true 반환
+            return true;
         } catch (Exception e) {
             return false;
         }
     }
+
+    /**
+     * refresh token을 사용하여 access token 재발급
+     */
+    /*public String issueAccessToken(HttpServletRequest request){
+        String accessToken = jwtTokenProvider.re
+
+        return null;
+    }*/
 }
