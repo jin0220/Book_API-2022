@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.Rollback;
@@ -15,7 +14,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -42,7 +40,7 @@ class UserControllerTest {
         user.setEmail("eeee");
         user.setProfileImage(null);
 
-        mockMvc.perform(post("/api/v1/signin")
+        mockMvc.perform(post("/api/v1/signup")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(user)))
                 .andExpect(status().isOk())
@@ -53,7 +51,7 @@ class UserControllerTest {
     public void login() throws Exception{
         mockMvc.perform(post("/api/v1/signin")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"id\": \"test\", \"password\": \"123\"}"))
+                .content("{\"id\": \"test12\", \"password\": \"111\"}"))
             .andExpect(status().isOk())
             .andDo(print());
     }

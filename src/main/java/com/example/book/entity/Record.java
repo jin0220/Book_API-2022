@@ -1,5 +1,6 @@
 package com.example.book.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
@@ -38,7 +39,9 @@ public class Record {
     @ApiModelProperty(example = "책 분류")
     private String category;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    // 외래키로 다른 테이블의 속성을 참조하고 있음. 따라서 참조한 해당 속성이 필히 존재해야함
+    @ManyToOne(fetch = FetchType.LAZY) // cascade
     @JoinColumn(name = "USER_ID")
+    @JsonBackReference // 자식클래스
     private User user;
 }

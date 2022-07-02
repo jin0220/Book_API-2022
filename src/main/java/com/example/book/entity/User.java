@@ -1,6 +1,7 @@
 package com.example.book.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
@@ -34,6 +35,7 @@ public class User implements UserDetails {
     private String refreshToken;
 
     @OneToMany(mappedBy = "user")
+    @JsonManagedReference
     private List<Record> recordList = new ArrayList<>();
 
     @OneToMany(mappedBy = "fromUser")
