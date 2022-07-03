@@ -9,14 +9,17 @@ import com.example.book.service.UserService;
 import com.sun.org.apache.xpath.internal.operations.Bool;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -27,6 +30,15 @@ public class UserController {
 
     private final UserService userService;
     private final JwtTokenProvider jwtTokenProvider;
+
+    HttpHeaders responseHeaders;
+
+    @PostConstruct  // WAS가 띄워질 때 실행
+    public void init(){
+        // 한글 깨짐 방지
+        responseHeaders = new HttpHeaders();
+        responseHeaders.add("Content-Type", "application/json; charset=UTF-8");
+    }
 
     /**
      * 회원 가입
@@ -118,4 +130,42 @@ public class UserController {
 //
 //        return userService.refreshToken(accessToken, refreshToken);
 //    }
+
+    /**
+     * 사용자 전체 조회
+     * */
+    @GetMapping("/users")
+    public ResponseEntity<Message> findAll(){
+        Message message = new Message();
+
+        Map<String, List<User>> map = new HashMap<>();
+
+        map.put("userList", userService.findAll());
+
+        message.setMessage("Success");
+        message.setStatus(StatusEnum.OK);
+        message.setData(map);
+
+        return new ResponseEntity<>(message, responseHeaders, HttpStatus.OK);
+    }
+
+    /**
+     * 사용자 조회
+     * @param userId 조회하려는 사용자 아이디
+     * */
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<Message> findOne(@PathVariable String userId){
+        Message message = new Message();
+
+        Map<String, User> map = new HashMap<>();
+
+        map.put("userList",userService.findOne(userId));
+
+        message.setMessage("Success");
+        message.setStatus(StatusEnum.OK);
+        message.setData(map);
+
+        return new ResponseEntity<>(message, responseHeaders, HttpStatus.OK);
+    }
+
 }

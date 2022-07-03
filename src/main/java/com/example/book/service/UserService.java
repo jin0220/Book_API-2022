@@ -11,6 +11,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service
 @RequiredArgsConstructor // 의존성 주입
@@ -80,5 +82,13 @@ public class UserService implements UserDetailsService {
         if(user == null)  return null;
 
         return user;
+    }
+
+    public List<User> findAll(){
+        return userRepository.findAll();
+    }
+
+    public User findOne(String userId) {
+        return userRepository.findUserById(userId);
     }
 }

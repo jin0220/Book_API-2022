@@ -14,7 +14,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -54,5 +54,19 @@ class UserControllerTest {
                 .content("{\"id\": \"test12\", \"password\": \"111\"}"))
             .andExpect(status().isOk())
             .andDo(print());
+    }
+
+    @Test
+    public void findAll() throws Exception{
+        mockMvc.perform(get("/api/v1/users"))
+                .andExpect(status().isOk())
+                .andDo(print());
+    }
+
+    @Test
+    public void findOne() throws Exception{
+        mockMvc.perform(get("/api/v1/user/"+"test12"))
+                .andExpect(status().isOk())
+                .andDo(print());
     }
 }
