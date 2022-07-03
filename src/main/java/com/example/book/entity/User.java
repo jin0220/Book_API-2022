@@ -45,6 +45,7 @@ public class User implements UserDetails {
     private List<Follow> toUserList = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
+    @JsonManagedReference
     private List<Likes> likesList = new ArrayList<>();
 
 
