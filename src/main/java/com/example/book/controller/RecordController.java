@@ -160,5 +160,65 @@ public class RecordController {
         return new ResponseEntity<>(message, responseHeaders, HttpStatus.OK);
     }
 
+    /**
+     * 기록 수정
+     * @param num 수정하고자 하는 레코드 id 값
+     * @param record 사용자 입력
+     * @return
+      {"status":"OK","message":"Success","data":{"result":true}}
+     *  */
+    @PutMapping("/record/{num}")
+    @ApiOperation(value = "기록 수정")
+    public ResponseEntity<Message> update(@PathVariable Long num, @RequestBody Record record, HttpServletRequest request){
+        String accessToken = request.getHeader("X-AUTH-TOKEN");
+        boolean check = recordService.update(num, record, accessToken);
+
+        Message message = new Message();
+
+        Map<String, Boolean> map = new HashMap<>();
+
+        if(check){
+            map.put("result", true);
+
+            message.setMessage("Success");
+            message.setStatus(StatusEnum.OK);
+            message.setData(map);
+        }
+        else{
+            map.put("result", false);
+
+            message.setMessage("Fail");
+            message.setStatus(StatusEnum.OK);
+            message.setData(map);
+        }
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/record/{num}")
+    @ApiOperation(value = "기록 삭제")
+    public ResponseEntity<Message> deleteRecord(@PathVariable Long num, HttpServletRequest request){
+        String accessToken = request.getHeader("X-AUTH-TOKEN");
+        boolean check = recordService.delete(num, accessToken);
+
+        Message message = new Message();
+
+        Map<String, Boolean> map = new HashMap<>();
+
+        if(check){
+            map.put("result", true);
+
+            message.setMessage("Success");
+            message.setStatus(StatusEnum.OK);
+            message.setData(map);
+        }
+        else{
+            map.put("result", false);
+
+            message.setMessage("Fail");
+            message.setStatus(StatusEnum.OK);
+            message.setData(map);
+        }
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
 
 }

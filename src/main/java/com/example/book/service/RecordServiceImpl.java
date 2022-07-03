@@ -67,4 +67,35 @@ public class RecordServiceImpl implements RecordService{
         else
             return null;
     }
+
+    @Override
+    public boolean update(Long num, Record record, String token) {
+        User user = getUserId(token);
+
+        if(user != null){
+            Optional<Record> record1 = recordRepository.findById(num);
+            if(record1 != null) {
+                record.setId(num);
+                recordRepository.save(record);
+                return true;
+            }
+            else return false;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean delete(Long num, String token) {
+        User user = getUserId(token);
+        Record record = new Record();
+        record.setId(num);
+        if(user != null){
+            recordRepository.delete(record);
+            return true;
+        }
+
+        return false;
+    }
+
+
 }

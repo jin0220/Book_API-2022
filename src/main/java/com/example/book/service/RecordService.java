@@ -16,4 +16,10 @@ public interface RecordService {
 
     // 기록의 상세 페이지
     public Optional<Record> findOne(Long num, String token);
+
+    // 기록 수정
+    public boolean update(Long num, Record record, String token);
+
+    // 기록 삭제
+    public boolean delete(Long num, String token);
 }
