@@ -34,10 +34,11 @@ class UserControllerTest {
     @Rollback(value = false) // 테스트 중 db에 입력된 값을 테스트 전 원래상태로 rollback 해준다. default는 true
     public void signUp() throws Exception{
         ObjectMapper objectMapper = new ObjectMapper();
+        // 아이디와 이메일이 중복될 경우 저장 안됨.
         User user = new User();
-        user.setId("test12");
+        user.setId("test1");
         user.setPassword("111");
-        user.setEmail("eeee");
+        user.setEmail("eeee1");
         user.setProfileImage(null);
 
         mockMvc.perform(post("/api/v1/signup")
@@ -65,7 +66,7 @@ class UserControllerTest {
 
     @Test
     public void findOne() throws Exception{
-        mockMvc.perform(get("/api/v1/user/"+"test12"))
+        mockMvc.perform(get("/api/v1/user/"+"test1"))
                 .andExpect(status().isOk())
                 .andDo(print());
     }
