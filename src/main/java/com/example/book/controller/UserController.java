@@ -5,6 +5,7 @@ import com.example.book.dto.UserDTO;
 import com.example.book.entity.User;
 import com.example.book.entity.response.Message;
 import com.example.book.entity.response.StatusEnum;
+import com.example.book.service.AuthService;
 import com.example.book.service.UserService;
 import com.sun.org.apache.xpath.internal.operations.Bool;
 import io.swagger.annotations.ApiOperation;
@@ -17,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.List;
@@ -30,6 +32,7 @@ public class UserController {
 
     private final UserService userService;
     private final JwtTokenProvider jwtTokenProvider;
+    private final AuthService authService;
 
     HttpHeaders responseHeaders;
 
@@ -102,7 +105,9 @@ public class UserController {
         // 회원 정보가 일치하면 토큰 생성
         if(check) {
             String accessToken = jwtTokenProvider.createToken(user.getId());
-            String refreshToken = jwtTokenProvider.createRefreshToken();
+            String refreshToken = jwtTokenProvider.createRefreshToken(user.getId());
+
+            authService.updateRefreshToken(refreshToken, user.getId());
 
             Map<String, String> map = new HashMap<>();
             map.put("accessToken", accessToken);
@@ -122,13 +127,11 @@ public class UserController {
         }
     }
 
-//    @ApiOperation(value = "토큰 재발급", notes = "토큰을 재발급힌다.")
-//    @PostMapping(value = "/refresh")
-//    public UserDTO refreshToken(
-//            @RequestHeader(value = "X-AUTH-TOKEN") String accessToken,
-//            @RequestHeader(value = "REFRESH-TOKEN") String refreshToken){
-//
-//        return userService.refreshToken(accessToken, refreshToken);
+
+//    public void logout(String token){
+//        redisTemplate.opsForValue().set(CacheKey.TOKEN + ":" + token, "v", jwtTokenProvider.getRemainingSeconds(token));
+//        User user = userRepository.findById(Long.valueOf(jwtTokenProvider.getUserPk(token))).orElseThrow(UserNotFoundException::new);
+//        user.changeRefreshToken("invalidate");
 //    }
 
     /**

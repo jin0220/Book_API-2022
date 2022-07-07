@@ -1,8 +1,10 @@
 package com.example.book.controller;
 
+import com.example.book.configuration.JwtTokenProvider;
 import com.example.book.entity.Record;
 import com.example.book.entity.response.Message;
 import com.example.book.entity.response.StatusEnum;
+import com.example.book.service.AuthService;
 import com.example.book.service.RecordService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +24,8 @@ import java.util.Optional;
 @RequestMapping("/api/v1")
 public class RecordController {
     private final RecordService recordService;
+    private final AuthService authService;
+    private final JwtTokenProvider jwtTokenProvider;
 
     /**
      * 헤더에 포함된 access token 정보와 사용자 입력 정보를 받는다.
@@ -39,7 +43,7 @@ public class RecordController {
     @PostMapping("/record")
     @ApiOperation(value = "책에 대한 기록 저장")
     public ResponseEntity<Message> save(@RequestBody Record record, HttpServletRequest request){
-        String accessToken = request.getHeader("X-AUTH-TOKEN"); // 추후 수정 - 토큰 검증시 인터셉터 사용하기
+        String accessToken = jwtTokenProvider.resolveToken(request);
 
         boolean check = recordService.save(record, accessToken);
 
@@ -81,8 +85,7 @@ public class RecordController {
     @GetMapping("/record-list/{date}")
     @ApiOperation(value = "달력을 클릭했을 때 해당 날짜에 대한 기록 조회")
     public ResponseEntity<Message> findList(@PathVariable String date, HttpServletRequest request){
-
-        String accessToken = request.getHeader("X-AUTH-TOKEN");
+        String accessToken = jwtTokenProvider.resolveToken(request);
 
         List<Record> recordList = recordService.findList(date, accessToken);
 
@@ -129,7 +132,7 @@ public class RecordController {
     @GetMapping("/record-detail/{num}")
     @ApiOperation(value = "기록의 상세 페이지")
     public ResponseEntity<Message> findOne(@PathVariable Long num, HttpServletRequest request){
-        String accessToken = request.getHeader("X-AUTH-TOKEN");
+        String accessToken = jwtTokenProvider.resolveToken(request);
 
         Optional<Record> record = recordService.findOne(num, accessToken);
 
@@ -170,7 +173,7 @@ public class RecordController {
     @PutMapping("/record/{num}")
     @ApiOperation(value = "기록 수정")
     public ResponseEntity<Message> update(@PathVariable Long num, @RequestBody Record record, HttpServletRequest request){
-        String accessToken = request.getHeader("X-AUTH-TOKEN");
+        String accessToken = jwtTokenProvider.resolveToken(request);
         boolean check = recordService.update(num, record, accessToken);
 
         Message message = new Message();
@@ -197,7 +200,7 @@ public class RecordController {
     @DeleteMapping("/record/{num}")
     @ApiOperation(value = "기록 삭제")
     public ResponseEntity<Message> deleteRecord(@PathVariable Long num, HttpServletRequest request){
-        String accessToken = request.getHeader("X-AUTH-TOKEN");
+        String accessToken = jwtTokenProvider.resolveToken(request);
         boolean check = recordService.delete(num, accessToken);
 
         Message message = new Message();

@@ -32,6 +32,10 @@ public class RecordControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+    String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MTIiLCJpYXQiOjE2NTcwMjE4NjIsImV4cCI6MTY1NzAyNTQ2Mn0.O8tkGQTV0rzps2OvS81rgQuuUE7vQuQaFkWemGj7nYM";
+    String refreshToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MTIiLCJpYXQiOjE2NTcwNzM5NzMsImV4cCI6MTY1NzMzMzE3M30.7_Rfeibnr1jpQJOxCOy5kfZOj4-pibRdWRrlYIjBL-4";
+
+
     @Test
     @Transactional
     @Rollback(value = false)
@@ -43,14 +47,14 @@ public class RecordControllerTest {
         record.setImage("https://bookthumb-phinf.pstatic.net/cover/164/054/16405427.jpg?type=m1&udate=20210813");
         record.setPublisher("팩토리나인이미예");
         record.setMemo("good");
-        record.setDate("2022-07-02");
+        record.setDate("2022-07-07");
         record.setRating(5.0);
         record.setCategory("소설");
 
-        String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MTIiLCJpYXQiOjE2NTY3Nzg1OTMsImV4cCI6MTY1Njc4MjE5M30.sgVSepvi4elYUeeS_luE027sOZ6QTLjSSRWPV1SKfN4";
 
         mockMvc.perform(post("/api/v1/record")
                 .header("X-AUTH-TOKEN", token)
+//                .header("REFRESH-TOKEN", refreshToken)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(record)))
                 .andExpect(status().isOk())
@@ -59,22 +63,20 @@ public class RecordControllerTest {
 
     @Test
     public void findList() throws Exception {
-        String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MTIiLCJpYXQiOjE2NTY3Nzg1OTMsImV4cCI6MTY1Njc4MjE5M30.sgVSepvi4elYUeeS_luE027sOZ6QTLjSSRWPV1SKfN4";
-
         mockMvc.perform(
                 get("/api/v1/record-list/" + "2022-07-02")
-                .header("X-AUTH-TOKEN", token))
+                .header("X-AUTH-TOKEN", token)
+                .header("REFRESH-TOKEN", refreshToken))
                 .andExpect(status().isOk())
                 .andDo(print());
     }
 
     @Test
     public void findOne() throws Exception {
-        String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MTIiLCJpYXQiOjE2NTY3Nzg1OTMsImV4cCI6MTY1Njc4MjE5M30.sgVSepvi4elYUeeS_luE027sOZ6QTLjSSRWPV1SKfN4";
-
         mockMvc.perform(
                 get("/api/v1/record-detail/" + "7")
                     .header("X-AUTH-TOKEN", token)
+                    .header("REFRESH-TOKEN", refreshToken)
                 )
                 .andExpect(status().isOk())
                 .andDo(print());
@@ -84,8 +86,6 @@ public class RecordControllerTest {
     @Transactional
     @Rollback(value = false)
     public void update() throws Exception {
-        String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MTIiLCJpYXQiOjE2NTY4MzE2MDUsImV4cCI6MTY1NjgzNTIwNX0.wAoSSOljoNfRdEojsn0MXIZl-WCUd_ug-S2y1HmUbJE";
-
         ObjectMapper objectMapper = new ObjectMapper();
         Record record = new Record();
         record.setTitle("달러구트 꿈 백화점 (주문하신 꿈은 매진입니다)");
@@ -100,6 +100,7 @@ public class RecordControllerTest {
         mockMvc.perform(
                 put("/api/v1/record/" + "7")
                     .header("X-AUTH-TOKEN", token)
+                    .header("REFRESH-TOKEN", refreshToken)
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(record))
                 )
@@ -111,11 +112,10 @@ public class RecordControllerTest {
     @Transactional
     @Rollback(value = false)
     public void deleteRecord() throws Exception {
-        String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MTIiLCJpYXQiOjE2NTY4MzE2MDUsImV4cCI6MTY1NjgzNTIwNX0.wAoSSOljoNfRdEojsn0MXIZl-WCUd_ug-S2y1HmUbJE";
-
-        mockMvc.perform(
+         mockMvc.perform(
                     delete("/api/v1/record/" + "7")
                         .header("X-AUTH-TOKEN", token)
+                        .header("REFRESH-TOKEN", refreshToken)
                 )
                 .andExpect(status().isOk())
                 .andDo(print());

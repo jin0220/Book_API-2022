@@ -54,9 +54,11 @@ public class JwtTokenProvider {
     /**
      * jwt refresh token 생성
      */
-    public String createRefreshToken(){
+    public String createRefreshToken(String userPk){
+        Claims claims = Jwts.claims().setSubject(userPk);
         Date now = new Date();
         return Jwts.builder()
+                .setClaims(claims)
                 .setIssuedAt(now)
                 .setExpiration(new Date(now.getTime() + refreshTokenValidMillisecond))
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
@@ -85,6 +87,9 @@ public class JwtTokenProvider {
         return request.getHeader("X-AUTH-TOKEN");
     }
 
+    public String resolveRefreshToken(HttpServletRequest request) {
+        return request.getHeader("REFRESH-TOKEN");
+    }
     /**
      * jwt의 유효성 및 만료일자 확인
      */
@@ -92,19 +97,10 @@ public class JwtTokenProvider {
         try {
             Jws<Claims> claimsJws = Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token);
             return !claimsJws.getBody().getExpiration().before(new Date()); // 만료날짜가 현재보다 이전이면 false
-        } catch (ExpiredJwtException e){ // 만료시간이 지난 토큰이면 true 반환
-            return true;
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             return false;
         }
     }
 
-    /**
-     * refresh token을 사용하여 access token 재발급
-     */
-    /*public String issueAccessToken(HttpServletRequest request){
-        String accessToken = jwtTokenProvider.re
-
-        return null;
-    }*/
 }
