@@ -39,9 +39,11 @@ public class User implements UserDetails {
     private List<Record> recordList = new ArrayList<>();
 
     @OneToMany(mappedBy = "fromUser")
+    @JsonManagedReference
     private List<Follow> fromUserList = new ArrayList<>();
 
     @OneToMany(mappedBy = "toUser")
+    @JsonManagedReference
     private List<Follow> toUserList = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")

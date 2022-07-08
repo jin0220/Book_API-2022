@@ -35,7 +35,7 @@ public class FollowServiceImpl implements FollowService{
     public List<User> findFollower(String token) {
         User user = getUserId(token);
 
-        List<Follow> followerList = followRepository.findFollowByToUser(user.getId());
+        List<Follow> followerList = followRepository.findFollowByToUser(user);
 
         List<User> followerUserList = new ArrayList<>();
         for(int i = 0; i < followerList.size(); i++){
@@ -49,7 +49,7 @@ public class FollowServiceImpl implements FollowService{
     public List<User> findFollowing(String token) {
         User user = getUserId(token);
 
-        List<Follow> followingList = followRepository.findFollowByFromUser(user.getId());
+        List<Follow> followingList = followRepository.findFollowByFromUser(user);
 
         List<User> followingUserList = new ArrayList<>();
         for(int i = 0; i < followingList.size(); i++){

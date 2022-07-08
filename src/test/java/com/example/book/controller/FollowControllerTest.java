@@ -27,8 +27,7 @@ public class FollowControllerTest {
 
     @Autowired
     private FollowService followService;
-    String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MTIiLCJpYXQiOjE2NTY5MTkxMDksImV4cCI6MTY1NjkyMjcwOX0.IN9bsUmdAP3WnN5Jp1xN15HwS2IDN1idi07SpR-Yjyk";
-
+    String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MTIiLCJpYXQiOjE2NTcyNTU3NjEsImV4cCI6MTY1NzI1OTM2MX0.itnzGt4WR953qE25G4RFNlZwEWFvbq8fHkfLh2Znf6s";
     @Test
     @Transactional
     @Rollback(value = false)
@@ -42,24 +41,24 @@ public class FollowControllerTest {
                 .andDo(print());
     }
 
-//    @Test @Ignore
-//    public void findFollowers() throws Exception {
-//
-//        String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MTIiLCJpYXQiOjE2NTY5MTQ4NzIsImV4cCI6MTY1NjkxODQ3Mn0.TdPMXBxyKFD11CL6uGvvZC4flBaDrG6BppcWzgq8Y0s";
-//        mockMvc.perform(get("/api/v1/followers")
-//                .header("X-AUTH-TOKEN", token))
-//                .andExpect(status().isOk())
-//                .andDo(print());
-//    }
+    @Test
+    public void findFollowers() throws Exception {
 
-//    @Test
-//    public void findFollowings() throws Exception {
-//
-//        mockMvc.perform(get("/api/v1/followings")
-//                .header("X-AUTH-TOKEN", token))
-//                .andExpect(status().isOk())
-//                .andDo(print());
-//    }
+//        String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MTIiLCJpYXQiOjE2NTcxNzkzOTMsImV4cCI6MTY1NzE4Mjk5M30.mhgASFgmbgPHS6Nml6E86JWQ98l6kDNmHwTIgan7jt4";
+        mockMvc.perform(get("/api/v1/followers")
+                .header("X-AUTH-TOKEN", token))
+                .andExpect(status().isOk())
+                .andDo(print());
+    }
+
+    @Test
+    public void findFollowings() throws Exception {
+
+        mockMvc.perform(get("/api/v1/followings")
+                .header("X-AUTH-TOKEN", token))
+                .andExpect(status().isOk())
+                .andDo(print());
+    }
 
     @Test
     @Transactional
