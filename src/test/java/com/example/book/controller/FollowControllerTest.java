@@ -27,7 +27,9 @@ public class FollowControllerTest {
 
     @Autowired
     private FollowService followService;
-    String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MTIiLCJpYXQiOjE2NTcyNTU3NjEsImV4cCI6MTY1NzI1OTM2MX0.itnzGt4WR953qE25G4RFNlZwEWFvbq8fHkfLh2Znf6s";
+
+    String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MTIiLCJpYXQiOjE2NTczNjY2NDQsImV4cCI6MTY1NzM3MDI0NH0.spbrzZIXc5b8FqfFOtTUYGiIcOkyuBUQi_zLEDVFTOw";
+
     @Test
     @Transactional
     @Rollback(value = false)

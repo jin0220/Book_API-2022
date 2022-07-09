@@ -2,6 +2,7 @@ package com.example.book.controller;
 
 import com.example.book.dto.UserDTO;
 import com.example.book.entity.response.Message;
+import com.example.book.entity.response.StatusEnum;
 import com.example.book.service.AuthService;
 import com.sun.org.apache.regexp.internal.RE;
 import io.swagger.annotations.ApiOperation;
@@ -35,6 +36,7 @@ public class AuthController {
         Message message = new Message();
         message.setMessage("Token 발급");
         message.setData(map);
+        message.setStatus(StatusEnum.OK);
 
         return new ResponseEntity<>(message, HttpStatus.OK);
     }

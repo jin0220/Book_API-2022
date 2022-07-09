@@ -76,11 +76,12 @@ public class FollowController {
 
     /**
      * 팔로우 하기
+     * @param param 사용자가 팔로우하는 사용자 계정
      * */
     @PostMapping("/follow")
-    public ResponseEntity<Message> save(HttpServletRequest request, @RequestBody User user){
+    public ResponseEntity<Message> save(HttpServletRequest request, @RequestBody HashMap<String, Object> param){
         String accessToken = request.getHeader("X-AUTH-TOKEN");
-        String toUser = user.getId();
+        String toUser = param.get("id").toString();
 
         boolean check = followService.save(accessToken, toUser);
         Message message = new Message();

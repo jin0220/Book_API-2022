@@ -29,6 +29,8 @@ public class LikesControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+    String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MTIiLCJpYXQiOjE2NTczNjY2NDQsImV4cCI6MTY1NzM3MDI0NH0.spbrzZIXc5b8FqfFOtTUYGiIcOkyuBUQi_zLEDVFTOw";
+
     @Test
     @Transactional
     @Rollback(value = false)
@@ -41,8 +43,6 @@ public class LikesControllerTest {
         likes.setPublisher("팩토리나인이미예");
         likes.setCategory("소설");
 
-        String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MTIiLCJpYXQiOjE2NTY4NDY4ODMsImV4cCI6MTY1Njg1MDQ4M30.r8XOIYJGdwyHk-cz5I4FqozWTqMHQGwJJw1oqsfNxqk";
-
         mockMvc.perform(post("/api/v1/like")
                 .header("X-AUTH-TOKEN", token)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -53,7 +53,6 @@ public class LikesControllerTest {
 
     @Test
     public void findAll() throws Exception{
-        String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MTIiLCJpYXQiOjE2NTY4NDY4ODMsImV4cCI6MTY1Njg1MDQ4M30.r8XOIYJGdwyHk-cz5I4FqozWTqMHQGwJJw1oqsfNxqk";
 
         mockMvc.perform(get("/api/v1/likes")
                 .header("X-AUTH-TOKEN", token))
@@ -65,8 +64,6 @@ public class LikesControllerTest {
     @Transactional
     @Rollback(value = false)
     public void deleteLike() throws Exception {
-
-        String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MTIiLCJpYXQiOjE2NTY4NDY4ODMsImV4cCI6MTY1Njg1MDQ4M30.r8XOIYJGdwyHk-cz5I4FqozWTqMHQGwJJw1oqsfNxqk";
 
         mockMvc.perform(delete("/api/v1/like/" + "1")
                 .header("X-AUTH-TOKEN", token))

@@ -18,6 +18,6 @@ public class AppConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(jwtTokenInterceptor)
-            .excludePathPatterns("/api/v1/signin", "/api/v1/signup"); // 로그인은 인터셉트에서 제외
+            .excludePathPatterns("/api/v1/signin", "/api/v1/signup", "/api/v1/refresh"); // 로그인, 회원가입, 토큰 재발급은 인터셉트에서 제외
     }
 }

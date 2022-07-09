@@ -32,9 +32,8 @@ public class RecordControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MTIiLCJpYXQiOjE2NTcwMjE4NjIsImV4cCI6MTY1NzAyNTQ2Mn0.O8tkGQTV0rzps2OvS81rgQuuUE7vQuQaFkWemGj7nYM";
-    String refreshToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MTIiLCJpYXQiOjE2NTcwNzM5NzMsImV4cCI6MTY1NzMzMzE3M30.7_Rfeibnr1jpQJOxCOy5kfZOj4-pibRdWRrlYIjBL-4";
-
+    String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MTIiLCJpYXQiOjE2NTczNjY2NDQsImV4cCI6MTY1NzM3MDI0NH0.spbrzZIXc5b8FqfFOtTUYGiIcOkyuBUQi_zLEDVFTOw";
+//    String refreshToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MTIiLCJpYXQiOjE2NTczNTMwMTksImV4cCI6MTY1NzYxMjIxOX0.0tVn3uiurB4xwNvMI5qxhvgNjtWIxGX6tXG-dKWcaXk";
 
     @Test
     @Transactional
@@ -65,8 +64,7 @@ public class RecordControllerTest {
     public void findList() throws Exception {
         mockMvc.perform(
                 get("/api/v1/record-list/" + "2022-07-02")
-                .header("X-AUTH-TOKEN", token)
-                .header("REFRESH-TOKEN", refreshToken))
+                .header("X-AUTH-TOKEN", token))
                 .andExpect(status().isOk())
                 .andDo(print());
     }
@@ -76,7 +74,6 @@ public class RecordControllerTest {
         mockMvc.perform(
                 get("/api/v1/record-detail/" + "7")
                     .header("X-AUTH-TOKEN", token)
-                    .header("REFRESH-TOKEN", refreshToken)
                 )
                 .andExpect(status().isOk())
                 .andDo(print());
@@ -98,9 +95,8 @@ public class RecordControllerTest {
         record.setCategory("소설");
 
         mockMvc.perform(
-                put("/api/v1/record/" + "7")
+                put("/api/v1/record/" + "13")
                     .header("X-AUTH-TOKEN", token)
-                    .header("REFRESH-TOKEN", refreshToken)
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(record))
                 )
@@ -115,7 +111,6 @@ public class RecordControllerTest {
          mockMvc.perform(
                     delete("/api/v1/record/" + "7")
                         .header("X-AUTH-TOKEN", token)
-                        .header("REFRESH-TOKEN", refreshToken)
                 )
                 .andExpect(status().isOk())
                 .andDo(print());

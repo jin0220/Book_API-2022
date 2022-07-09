@@ -42,7 +42,17 @@ public class RecordController {
      */
     @PostMapping("/record")
     @ApiOperation(value = "책에 대한 기록 저장")
-    public ResponseEntity<Message> save(@RequestBody Record record, HttpServletRequest request){
+    public ResponseEntity<Message> save(@RequestBody HashMap<String, Object> param, HttpServletRequest request){
+        Record record = new Record();
+        record.setTitle(param.get("title").toString());
+        record.setAuthor(param.get("author").toString());
+        record.setImage(param.get("image").toString());
+        record.setPublisher(param.get("publisher").toString());
+        record.setMemo(param.get("memo").toString());
+        record.setDate(param.get("date").toString());
+        record.setRating((double) param.get("rating"));
+        record.setCategory(param.get("category").toString());
+
         String accessToken = jwtTokenProvider.resolveToken(request);
 
         boolean check = recordService.save(record, accessToken);
@@ -172,7 +182,17 @@ public class RecordController {
      *  */
     @PutMapping("/record/{num}")
     @ApiOperation(value = "기록 수정")
-    public ResponseEntity<Message> update(@PathVariable Long num, @RequestBody Record record, HttpServletRequest request){
+    public ResponseEntity<Message> update(@PathVariable Long num, @RequestBody HashMap<String, Object> param, HttpServletRequest request){
+        Record record = new Record();
+        record.setTitle(param.get("title").toString());
+        record.setAuthor(param.get("author").toString());
+        record.setImage(param.get("image").toString());
+        record.setPublisher(param.get("publisher").toString());
+        record.setMemo(param.get("memo").toString());
+        record.setDate(param.get("date").toString());
+        record.setRating((double)param.get("rating"));
+        record.setCategory(param.get("category").toString());
+
         String accessToken = jwtTokenProvider.resolveToken(request);
         boolean check = recordService.update(num, record, accessToken);
 

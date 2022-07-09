@@ -26,7 +26,7 @@ public class AuthControllerTest {
 
     @Test
     public void refreshToken() throws Exception {
-        String refreshToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MTIiLCJpYXQiOjE2NTcxNjAzOTUsImV4cCI6MTY1NzQxOTU5NX0.4ofg0iixiM-nXMqzF67L3b1T9cxbbpazH1nmZmvENc0";
+        String refreshToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MTIiLCJpYXQiOjE2NTczNTMwMTksImV4cCI6MTY1NzYxMjIxOX0.0tVn3uiurB4xwNvMI5qxhvgNjtWIxGX6tXG-dKWcaXk";
         mockMvc.perform(post("/api/v1/refresh")
 //                .header("X-AUTH-TOKEN", token)
                 .header("REFRESH-TOKEN", refreshToken))

@@ -29,6 +29,8 @@ class UserControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+    String token ="eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MTIiLCJpYXQiOjE2NTczNTI4MDAsImV4cCI6MTY1NzM1NjQwMH0.shyVec-Vn80Beq6nVp31vCwQGSF5iPdV4ifujNDCX_c";
+
     @Test
     @Transactional // 트랜잭션을 자동으로 수행, 예외나 에러가 발생하면 test 중 db에 입력된 값들을 rollback 해준다.
     @Rollback(value = false) // 테스트 중 db에 입력된 값을 테스트 전 원래상태로 rollback 해준다. default는 true
@@ -36,10 +38,10 @@ class UserControllerTest {
         ObjectMapper objectMapper = new ObjectMapper();
         // 아이디와 이메일이 중복될 경우 저장 안됨.
         User user = new User();
-        user.setId("test1");
+        user.setId("test3");
         user.setPassword("111");
         user.setEmail("eeee1");
-        user.setProfileImage(null);
+        user.setProfileImage("null");
 
         mockMvc.perform(post("/api/v1/signup")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -59,14 +61,16 @@ class UserControllerTest {
 
     @Test
     public void findAll() throws Exception{
-        mockMvc.perform(get("/api/v1/users"))
+        mockMvc.perform(get("/api/v1/users")
+                .header("X-AUTH-TOKEN", token))
                 .andExpect(status().isOk())
                 .andDo(print());
     }
 
     @Test
     public void findOne() throws Exception{
-        mockMvc.perform(get("/api/v1/user/"+"test1"))
+        mockMvc.perform(get("/api/v1/user/"+"test1")
+                .header("X-AUTH-TOKEN", token))
                 .andExpect(status().isOk())
                 .andDo(print());
     }

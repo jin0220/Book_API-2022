@@ -63,7 +63,14 @@ public class LikesController {
      * 사용자가 관심있어하는 책 등록
      * */
     @PostMapping("/like")
-    public ResponseEntity<Message> save(@RequestBody Likes likes, HttpServletRequest request) {
+    public ResponseEntity<Message> save(@RequestBody HashMap<String, Object> param, HttpServletRequest request) {
+        Likes likes = new Likes();
+        likes.setTitle(param.get("title").toString());
+        likes.setAuthor(param.get("author").toString());
+        likes.setImage(param.get("image").toString());
+        likes.setPublisher(param.get("publisher").toString());
+        likes.setCategory(param.get("category").toString());
+
         String accessToken = request.getHeader("X-AUTH-TOKEN");
 
         boolean check = likesService.save(accessToken, likes);

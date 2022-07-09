@@ -45,7 +45,7 @@ public class UserController {
 
     /**
      * 회원 가입
-     * @param user 사용자가 입력한 회원 정보
+     * @param param 사용자가 입력한 회원 정보
      * @return 회원 가입의 성공 여부
         {
           "status": "OK",
@@ -58,7 +58,13 @@ public class UserController {
     @ResponseBody
     @PostMapping("/signup")
     @ApiOperation(value = "신규 회원 정보 입력")
-    public ResponseEntity<Message> singUp(@RequestBody User user){
+    public ResponseEntity<Message> singUp(@RequestBody HashMap<String, Object> param){
+        User user = new User();
+        user.setId(param.get("id").toString());
+        user.setPassword(param.get("password").toString());
+        user.setEmail(param.get("email").toString());
+        user.setProfileImage(param.get("profileImage").toString());
+
         boolean check = userService.save(user);
 
         Map<String, Boolean> map = new HashMap<>();
@@ -87,7 +93,7 @@ public class UserController {
 
     /**
      * 로그인
-     * @param user 사용자가 입력한 아이디, 비밀번호
+     * @param param 사용자가 입력한 아이디, 비밀번호
      * @return 로그인이 성공했을 경우 토큰 전달
         {
             "status": "OK",
@@ -100,7 +106,11 @@ public class UserController {
     @ResponseBody
     @PostMapping(value = "/signin",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "로그인")
-    public ResponseEntity<Message> login(@RequestBody User user) {
+    public ResponseEntity<Message> login(@RequestBody HashMap<String, Object> param) {
+        User user = new User();
+        user.setId(param.get("id").toString());
+        user.setPassword(param.get("password").toString());
+
         boolean check = userService.login(user);
         // 회원 정보가 일치하면 토큰 생성
         if(check) {
