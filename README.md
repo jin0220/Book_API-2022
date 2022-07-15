@@ -6,7 +6,7 @@
 - 개발 환경: IntelliJ
 - 개발 언어: Java
 - 데이터베이스: MySQL
-- 프레임워크: Spring Boot
+- 프레임워크: Spring Boot, Swagger(API 자동 문서화)
 - 라이브러리: Lombok
 - 인터페이스: JPA
 - 개발 기간: 약 1개월 (2022.06.19 ~ 2022.07.10)
